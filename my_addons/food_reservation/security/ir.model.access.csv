@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+food_reservation.access_food_week,access_food_week,food_reservation.model_food_week,base.group_user,1,1,1,1
+food_reservation.access_food_day,access_food_day,food_reservation.model_food_day,base.group_user,1,1,1,1
+food_reservation.access_food_product,access_food_product,food_reservation.model_food_product,base.group_user,1,1,1,1
+food_reservation.access_food_order,access_food_order,food_reservation.model_food_order,base.group_user,1,1,1,1

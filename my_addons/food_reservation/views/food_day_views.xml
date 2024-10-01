@@ -1,0 +1,60 @@
+<?xml version='1.0'?>
+<odoo>
+    <record id='food_day_action' model='ir.actions.act_window'>
+        <field name='name'>Days</field>
+        <field name='res_model'>food.day</field>
+        <field name='view_mode'>tree,form,kanban</field>
+    </record>
+
+    <record id='food_day_view_tree' model='ir.ui.view'>
+        <field name='name'>Days</field>
+        <field name='model'>food.day</field>
+        <field name='arch' type='xml'>
+            <tree string='channel' >
+                <field name='name' string='Title' />
+                <field name='day' />
+                <field name='food_ids' widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+    
+    <record id='food_day_view_form' model='ir.ui.view'>
+        <field name='name'>Dayss</field>
+        <field name='model'>food.day</field>
+        <field name='arch' type='xml'>
+            <form string="PROPERTY">
+                <sheet>
+                    <h1>
+                        <field name='name' />
+                    </h1>
+                    <group>
+                        <group>
+                            <field name='day' />
+                        </group>
+                        <group>
+                            <field name='week_id' domain="[('start_date', '&lt;=', day), ('end_date', '&gt;=', day)]"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name='food_ids_count' invisible="1" />
+                            <field name='food_ids'  attrs="{ 'readonly': [('food_ids_count', '>', '2')]}" widget="many2many_tags" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+
+    <record id='food_day_view_search' model='ir.ui.view'>
+        <field name='name'>food.day.search</field>
+        <field name='model'>food.day</field>
+        <field name="arch" type="xml">
+            <search string="Estate Properties">
+                <field name="name"/>
+            </search>
+        </field>    
+    </record>
+
+</odoo>
