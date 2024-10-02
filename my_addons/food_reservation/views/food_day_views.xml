@@ -4,13 +4,16 @@
         <field name='name'>Days</field>
         <field name='res_model'>food.day</field>
         <field name='view_mode'>tree,form,kanban</field>
+        <field name="context">{'search_default_group_by_week_id':1}</field>
+        <field name="search_view_id" ref="food_day_view_search"/>
+
     </record>
 
     <record id='food_day_view_tree' model='ir.ui.view'>
         <field name='name'>Days</field>
         <field name='model'>food.day</field>
         <field name='arch' type='xml'>
-            <tree string='channel' >
+            <tree string='channel' expand="1">
                 <field name='name' string='Title' />
                 <field name='day' />
                 <field name='food_ids' widget="many2many_tags" />
@@ -36,12 +39,25 @@
                         </group>
                     </group>
                     <group>
-                        <group>
-                            <field name='food_ids_count' invisible="1" />
-                            <field name='food_ids'  attrs="{ 'readonly': [('food_ids_count', '>', '2')]}" widget="many2many_tags" />
-                        </group>
+                        <field name='food_ids_count' invisible="1" />
+                        <field name='food_ids'  attrs="{ 'readonly': [('food_ids_count', '>', '2')]}" widget="many2many_tags" />
+                    </group>
+                    <group>
+                        <field name='order_ids' />
+                    </group>
+                    <group>
+                         <group >
+                        <field name='khorak_orders_count' string='Khorak Count' />
+                    </group>
+                    <group >
+                        <field name='polo_orders_count'  string='Polo Count' />
+                    </group>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="name"/>
+                    <field name="day"/>
+                </div>
             </form>
         </field>
     </record>
@@ -51,10 +67,14 @@
         <field name='name'>food.day.search</field>
         <field name='model'>food.day</field>
         <field name="arch" type="xml">
-            <search string="Estate Properties">
+            <search string="Days">
                 <field name="name"/>
+                <group string='Days' expand='0'>
+                    <filter name='group_by_week_id' context="{'group_by': 'week_id'}"/>
+                </group>
             </search>
         </field>    
+
     </record>
 
 </odoo>

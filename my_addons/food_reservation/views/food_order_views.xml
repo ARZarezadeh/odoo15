@@ -3,18 +3,19 @@
     <record id='food_order_action' model='ir.actions.act_window'>
         <field name='name'>Food Orders</field>
         <field name='res_model'>food.order</field>
-        <field name='view_mode'>tree,form</field>
+        <field name='view_mode'>tree,form,kanban</field>
     </record>
 
     <record id='food_order_view_tree' model='ir.ui.view'>
         <field name='name'>Food Orders</field>
         <field name='model'>food.order</field>
         <field name='arch' type='xml'>
-            <tree string='channel' >
+            <tree string='channel' expand="1">
                 <field name='name'/>
                 <field name='week_id' string="Week" />
                 <field name='day_id' string="Day"  />
                 <field name='food_id' string="Selected Food"  />
+                <field name='user_id' string="user"/>
             </tree>
         </field>
     </record>
@@ -42,12 +43,54 @@
                     </group>
                     <group>
                         <group>
-                            <field name='food_id' />
+                            <field name='food_id' 
+                            
+                            domain="[('day_ids', 'in', [day_id])]"
+                            
+                            widget="radio"
+                            />
                         </group>
                     </group>
-
                 </sheet>
             </form>
+        </field>
+    </record>
+
+
+    <record id='food_order_view_kanban' model='ir.ui.view'>
+        <field name='name'>Food Orders Kanban</field>
+        <field name='model'>food.order</field>
+        <field name='arch' type='xml'>
+            <kanban class="o_kanban_mobile" default_group_by='day_id'>
+                <!-- <field name="state"/>
+                <field name="property_type_id"/> -->
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div>
+                                <div>
+                                    ordered by:
+                                    <span>
+                                        <field name="user_id" widget="many2one_avatar"/>
+                                        <span t-field="user_id.name"/>
+                                    </span>                                </div>
+                            </div>
+                            <div>
+                                <group>
+                                    Day: 
+                                    <field name='day_id'/>
+                                </group>
+                            </div>
+                            <div>
+                                <group>
+                                    Food: 
+                                    <field name='food_id'/>
+                                </group>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
     
@@ -59,8 +102,13 @@
             <search string="Estate Properties">
                 <field name="name"/>
                 <field name="food_id"/>
+                <group expand='0' string='User'>
+                    <filter name='user_id' context="{'group_by': 'user_id'}"/>
+                    <filter name='day_id' context="{'group_by': 'day_id'}"/>
+                </group>
             </search>
         </field>    
     </record>
+
 
 </odoo>

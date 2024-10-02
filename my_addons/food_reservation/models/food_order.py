@@ -1,16 +1,23 @@
+from typing import Self
 from odoo import api, models, fields
 
 
 class FoodOrder(models.Model):
     _name = 'food.order'
     _description = 'Food Order'
+    _order = "day_id"
 
     name = fields.Char(compute="_compute_name")
     week_id = fields.Many2one("food.week", string="Week")
     # day = fields.Many2one("food.day", string="Day")
     day_id = fields.Many2one(
-        "food.day", string="Day")
-    food_id = fields.Many2one("food.product", string="Foods")
+        "food.day", string="Day", store=True)
+    food_id = fields.Many2one("food.product", string="Foods", store=True)
+
+    user_id = fields.Many2one(
+        'res.users', string='orderer', default=lambda self: self.env.user, store=True)
+    user_image = fields.Binary(
+        related='user_id.image_128', string="User  Image", store=True)
 
     # ----------------- APIS --------------------#
 

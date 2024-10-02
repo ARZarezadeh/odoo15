@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 class FoodDay(models.Model):
     _name = "food.day"
     _description = "Food Day"
+    _order = "day"
 
     name = fields.Char(compute='_compute_name')
     day = fields.Date(required=True, string='Day',
@@ -15,6 +16,12 @@ class FoodDay(models.Model):
     food_ids_count = fields.Integer(
         compute="_compute_food_ids_count", store=True, default=0)
     week_id = fields.Many2one('food.week', "Week")
+    order_ids = fields.One2many('food.order', 'day_id')
+    khorak_orders_count = fields.Integer(
+        compute="_compute_khorak_orders_count")
+
+    polo_orders_count = fields.Integer(
+        compute="_compute_polo_orders_count")
 
     # ----------------- CONSTRAINTS --------------------#
 
@@ -48,3 +55,32 @@ class FoodDay(models.Model):
                 raise ValidationError("you can't order more than 2")
             record.food_ids_count = len(
                 record.food_ids) if record.food_ids else 0
+
+    @api.depends('order_ids')
+    def _compute_khorak_orders_count(self):
+        for record in self:
+            if record.order_ids:
+                print('orderds exist. compute khorak counts...',
+                      len(record.order_ids), record.order_ids[0].food_id.food_type)
+                khorak_count = 0
+                for order in record.order_ids:
+                    if order.food_id.food_type == 'khorak':
+                        khorak_count += 1
+                print("final khorak count: ", khorak_count)
+                record.khorak_orders_count = khorak_count
+            else:
+                record.khorak_orders_count = 0
+
+    @api.depends('order_ids')
+    def _compute_polo_orders_count(self):
+        for record in self:
+            if record.order_ids:
+                print('orderds exist. compute polo counts...',
+                      len(record.order_ids), record.order_ids[0].food_id.food_type)
+                polo_count = 0
+                for order in record.order_ids:
+                    if order.food_id.food_type == 'polo':
+                        polo_count += 1
+                record.polo_orders_count = polo_count
+            else:
+                record.polo_orders_count = 0

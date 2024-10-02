@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <menuitem id="food_reservation_menu_root" name="Food Reservation">
-        <menuitem id="food_reservation_weeks" name="Weeks" action="food_week_action" />
-        <menuitem id="food_reservation_days" name="Days" action="food_day_action" />
-        <menuitem id="food_reservation_products" name="Foods" action="food_product_action" />
+        <menuitem id="food_reservation_menu_create" name="Food Reservation Create" >
+            <menuitem id="food_reservation_weeks" name="Weeks" action="food_week_action" />
+            <menuitem id="food_reservation_days" name="Days" action="food_day_action" />
+            <menuitem id="food_reservation_products" name="Foods" action="food_product_action" />    
+        </menuitem>
         <menuitem id="food_reservation_orders" name="Orders" action="food_order_action" />
     </menuitem>
 </odoo>
