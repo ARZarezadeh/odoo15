@@ -1,5 +1,5 @@
-from typing import Self
 from odoo import api, models, fields
+from odoo.exceptions import ValidationError
 
 
 class FoodOrder(models.Model):
@@ -18,6 +18,15 @@ class FoodOrder(models.Model):
         'res.users', string='orderer', default=lambda self: self.env.user, store=True)
     user_image = fields.Binary(
         related='user_id.image_128', string="User  Image", store=True)
+
+    # ----------------- CONSTRAINTS --------------------#
+
+    @api.constrains('day_id', 'user_id')
+    def _check_unique_order_per_day(self):
+        for record in self:
+            if self.search_count([('day_id', '=', record.day_id.id), ('user_id', '=', record.user_id.id)]) > 1:
+                raise ValidationError(
+                    'You cannot create more than one food order per day!')
 
     # ----------------- APIS --------------------#
 
