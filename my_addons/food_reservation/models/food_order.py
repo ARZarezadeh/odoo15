@@ -6,13 +6,15 @@ class FoodOrder(models.Model):
     _name = 'food.order'
     _description = 'Food Order'
     _order = "day_id"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(compute="_compute_name")
     week_id = fields.Many2one("food.week", string="Week")
     # day = fields.Many2one("food.day", string="Day")
     day_id = fields.Many2one(
-        "food.day", string="Day", store=True)
-    food_id = fields.Many2one("food.product", string="Foods", store=True)
+        "food.day", string="Day", store=True, tracking=True)
+    food_id = fields.Many2one(
+        "food.product", string="Foods", store=True, tracking=True)
 
     user_id = fields.Many2one(
         'res.users', string='orderer', default=lambda self: self.env.user, store=True)

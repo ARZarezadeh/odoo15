@@ -1,6 +1,6 @@
 {
     "name": "Food Reservation",
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "category": "Food/Reservation",
     "application": "True",
     "license": "LGPL-3",
