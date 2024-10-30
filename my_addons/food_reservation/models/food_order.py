@@ -21,6 +21,10 @@ class FoodOrder(models.Model):
     user_image = fields.Binary(
         related='user_id.image_128', string="User  Image", store=True)
 
+    attachment_ids = fields.Many2many('ir.attachment',
+                                      compute='_compute_attachments',
+                                      inverse='_inverse_attachments'
+                                      )
     # ----------------- CONSTRAINTS --------------------#
 
     @api.constrains('day_id', 'user_id')
@@ -63,3 +67,39 @@ class FoodOrder(models.Model):
             return {'domain': {'food_id': domain}}
         else:
             return {'domain': {'food_id': []}}
+
+    @api.onchange('message_attachment_count')
+    def _compute_attachments(self):
+        for record in self:
+            attachment_ids = self.env['ir.attachment'].search([
+                ('res_model', '=', self._name),
+                ('res_id', '=', record.id)
+            ])
+            record.attachment_ids = attachment_ids.ids
+
+    def _inverse_attachments(self):
+        for record in self:
+            # Clear existing attachments
+            existing_attachments = self.env['ir.attachment'].search([
+                ('res_model', '=', self._name),
+                ('res_id', '=', record.id)
+            ])
+            existing_attachment_ids = existing_attachments.ids
+
+            # Add new attachments
+            for attachment in record.attachment_ids:
+                if attachment.id not in existing_attachment_ids:
+                    attachment.write({
+                        'res_model': self._name,
+                        'res_id': record.id,
+                    })
+
+            # Remove attachments that are no longer linked
+            for attachment in existing_attachments:
+                if attachment.id not in record.attachment_ids.ids:
+                    attachment.unlink()
+
+    # ----------------- METHODES --------------------#
+
+    def _test_food_cron(self):
+        print("TEST CRON IS RUNNING . . . . .. .")

@@ -11,15 +11,15 @@
         <field name='model'>food.order</field>
         <field name='arch' type='xml'>
             <tree string='channel' expand="1">
-                <field name='name'/>
+                <field name='name' />
                 <field name='week_id' string="Week" />
-                <field name='day_id' string="Day"  />
-                <field name='food_id' string="Selected Food"  />
-                <field name='user_id' string="user"/>
+                <field name='day_id' string="Day" />
+                <field name='food_id' string="Selected Food" />
+                <field name='user_id' string="user" />
             </tree>
         </field>
     </record>
-    
+
     <record id='food_order_view_form' model='ir.ui.view'>
         <field name='name'>Food Orderss</field>
         <field name='model'>food.order</field>
@@ -38,27 +38,30 @@
                     </group>
                     <group>
                         <group>
-                            <field name='day_id'/>
+                            <field name='day_id' />
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name='food_id' 
-                            
-                            domain="[('day_ids', 'in', [day_id])]"
-                            
-                            widget="radio"
+                            <field name='food_id'
+                                domain="[('day_ids', 'in', [day_id])]"
+                                widget="radio"
                             />
                         </group>
                     </group>
+                    <group>
+
+                        <field name="attachment_ids" widget="many2many_binary_file_size">
+                        </field>
+                    </group>
                 </sheet>
 
-                <div class='oe_chatter' >
-                    
+                <div class='oe_chatter'>
+
                     <field name="message_follower_ids" widget='mail_followers' />
                     <field name="message_ids" widget='mail_thread' />
                     <field name="activity_ids" widget='mail_activity' />
-                    
+
                 </div>
 
             </form>
@@ -77,23 +80,18 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div>
-                                <div>
-                                    ordered by:
-                                    <span>
-                                        <field name="user_id" widget="many2one_avatar"/>
-                                        <span t-field="user_id.name"/>
-                                    </span>                                </div>
+                                <div> ordered by: <span>
+                                        <field name="user_id" widget="many2one_avatar" />
+                                        <span t-field="user_id.name" />
+                                    </span>
+                                </div>
                             </div>
                             <div>
-                                <group>
-                                    Day: 
-                                    <field name='day_id'/>
+                                <group> Day: <field name='day_id' />
                                 </group>
                             </div>
                             <div>
-                                <group>
-                                    Food: 
-                                    <field name='food_id'/>
+                                <group> Food: <field name='food_id' />
                                 </group>
                             </div>
                         </div>
@@ -102,21 +100,21 @@
             </kanban>
         </field>
     </record>
-    
+
 
     <record id='food_order_view_search' model='ir.ui.view'>
         <field name='name'>food.order.search</field>
         <field name='model'>food.order</field>
         <field name="arch" type="xml">
             <search string="Estate Properties">
-                <field name="name"/>
-                <field name="food_id"/>
+                <field name="name" />
+                <field name="food_id" />
                 <group expand='0' string='User'>
-                    <filter name='user_id' context="{'group_by': 'user_id'}"/>
-                    <filter name='day_id' context="{'group_by': 'day_id'}"/>
+                    <filter name='user_id' context="{'group_by': 'user_id'}" />
+                    <filter name='day_id' context="{'group_by': 'day_id'}" />
                 </group>
             </search>
-        </field>    
+        </field>
     </record>
 
 
