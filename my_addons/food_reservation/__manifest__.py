@@ -1,6 +1,6 @@
 {
     "name": "Food Reservation",
-    "depends": ["base", "mail", "many2many_binary_widget_file_size"],
+    "depends": ["base", "mail", "many2many_binary_widget_file_size", "contacts"],
     "category": "Food/Reservation",
     "application": "True",
     "license": "LGPL-3",
@@ -13,6 +13,7 @@
         "views/food_day_views.xml",
         "views/food_product_views.xml",
         "views/food_reservation_menus.xml",
-        "views/food_crons.xml"
+        "views/food_crons.xml",
+        "data/mail_template_food_welcome.xml",
     ],
 }
