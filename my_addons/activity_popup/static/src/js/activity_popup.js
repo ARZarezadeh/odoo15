@@ -1,63 +1,3 @@
-// odoo.define('your_module.ActivityPopup', function(require) {
-//     "use strict";
-    
-//     let AbstractAction = require('web.AbstractAction');
-//     let session = require('web.session');
-//     let rpc = require('web.rpc');
-//     let Dialog = require('web.Dialog');
-
-//     AbstractAction.include({
-//         start: function() {
-//             this._super.apply(this, arguments);
-
-//             // Only trigger on first load when user logs in
-//             console.log("---------------activity_popup_shown", localStorage.getItem("activity_popup_shown"));
-//             if (session.is_bound && session.uid && !localStorage.getItem("activity_popup_shown")) {
-//                 this._showActivitiesPopup();
-//                 localStorage.setItem("activity_popup_shown", "true");  // Set flag to avoid repeat popups
-//             }
-//         },
-
-//         _showActivitiesPopup: function() {
-//             rpc.query({
-//                 route: '/activities_popup/get_activities',
-//                 params: {},
-//             }).then(function(activities) {
-//                 if (activities.length > 0) {
-//                     let content = "<ul>";
-//                     activities.forEach(function(activity) {
-//                         content += `<li><strong>Type:</strong> ${activity.activity_type}<br>`;
-//                         content += `<strong>Summary:</strong> ${activity.summary}<br>`;
-//                         content += `<strong>Due Date:</strong> ${activity.date_deadline}<br>`;
-//                         content += `<strong>Note:</strong> ${activity.note}<br><br></li>`;
-//                     });
-//                     content += "</ul>";
-
-//                     new Dialog(null, {
-//                         title: "Your Activities",
-//                         size: 'large',
-//                         $content: $('<div>').html(content),
-//                     }).open();
-//                 }
-//             });
-//         },
-//     });
-// });
-
-// // Define WebClient modification separately
-// odoo.define('your_module.WebClientLogout', function(require) {
-//     "use strict";
-    
-//     let WebClient = require('web.WebClient');
-
-//     WebClient.include({
-//         logout: function() {
-//             localStorage.removeItem("activity_popup_shown");  // Clear flag on logout
-//             return this._super.apply(this, arguments);
-//         }
-//     });
-// });
-
 odoo.define('your_module.ActivityPopup', function(require) {
     "use strict";
     
@@ -69,7 +9,6 @@ odoo.define('your_module.ActivityPopup', function(require) {
         start: function() {
             this._super.apply(this, arguments);
 
-            // Query the backend to check if the popup should be shown
             rpc.query({
                 route: '/activities_popup/get',
                 params: {},
