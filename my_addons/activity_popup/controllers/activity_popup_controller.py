@@ -9,6 +9,7 @@ class ActivityPopupController(http.Controller):
         # popup_shown Flag for checking if it is first time seeing popup after login or not
         if not request.session.get('popup_shown'):
 
+            # index zero is the current time(login just now), then first index is for previous login
             last_login_date = request.env.user.log_ids[1].create_date
             if last_login_date:
                 activities = request.env['mail.activity'].search([
@@ -24,7 +25,8 @@ class ActivityPopupController(http.Controller):
                     'summary': activity.summary,
                     'date_deadline': activity.date_deadline,
                     'note': activity.note,
-                    'create_date': activity.create_date
+                    'create_date': activity.create_date,
+                    'id': activity.id,
                 } for activity in activities]
 
                 return {'show_popup': True, 'activities': activity_data}
