@@ -10,14 +10,14 @@
         <field name='name'>Weeks</field>
         <field name='model'>food.week</field>
         <field name='arch' type='xml'>
-            <tree string='channel' >
+            <tree string='channel'>
                 <header>
-                    
+
                     <button name="create_next_week_button"
-                            string="creat next week"
-                            type="object"
-                            class="btn-secondary"/>
-                    
+                        string="creat next week"
+                        type="object"
+                        class="btn-secondary" />
+
                 </header>
                 <field name='name' string='Title' />
                 <field name='year' />
@@ -26,7 +26,7 @@
             </tree>
         </field>
     </record>
-    
+
     <record id='food_week_view_form' model='ir.ui.view'>
         <field name='name'>food.week.form</field>
         <field name='model'>food.week</field>
@@ -47,12 +47,14 @@
                             <field name='end_date' />
                         </group>
                         <group>
-                            <field name='week_number' invisible="1"/>
+                            <field name='week_number' invisible="1" />
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name='day_ids' string="Days"  />
+                            <field name='day_ids' string="Days" />
+                            <field name='order_ids' string="Orders" />
+                            <field name="most_ordered_food" />
                         </group>
                     </group>
 
@@ -60,17 +62,18 @@
             </form>
         </field>
     </record>
-    
+
 
     <record id='food_week_view_search' model='ir.ui.view'>
         <field name='name'>food.week.search</field>
         <field name='model'>food.week</field>
         <field name="arch" type="xml">
             <search string="Estate Properties">
-                <field name="week_number"/>
-                <field name="start_date" filter_domain="['|',('start_date', '>', datetime.now()),('start_date', '=', datetime.now())]"/>
+                <field name="week_number" />
+                <field name="start_date"
+                    filter_domain="['|',('start_date', '>', datetime.now()),('start_date', '=', datetime.now())]" />
             </search>
-        </field>    
+        </field>
     </record>
 
 </odoo>

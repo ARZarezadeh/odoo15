@@ -1,6 +1,9 @@
+from dataclasses import field
+from os import name
 from odoo import api, models, fields
 from datetime import datetime, timedelta, date
 from odoo.exceptions import UserError, ValidationError
+from collections import defaultdict
 
 
 class FoodWeek(models.Model):
@@ -16,6 +19,9 @@ class FoodWeek(models.Model):
     end_date = fields.Date(
         string='End Date', compute="_compute_end_date", readonly=True, store=True)
     day_ids = fields.One2many('food.day', 'week_id')
+
+    order_ids = fields.One2many('food.order', 'week_id')
+    most_ordered_food = fields.Char(compute="_compute_most_ordered_food")
 
     # ----------------- CONSTRAINTS --------------------#
 
@@ -111,6 +117,20 @@ class FoodWeek(models.Model):
                 record.week_number = week_number
             else:
                 record.week_number = 0
+
+    @api.depends("order_ids")
+    def _compute_most_ordered_food(self):
+        for record in self:
+            food_count = defaultdict(int)
+
+            for order in record.order_ids:
+                if order.food_id:
+                    food_count[order.food_id] += 1
+
+            most_ordered_food, count = max(
+                food_count.items(), key=lambda x: x[1])
+
+            record.most_ordered_food = [most_ordered_food.name, count]
 
     @api.constrains('start_date', 'year')
     def _check_unique_week_year(self):
