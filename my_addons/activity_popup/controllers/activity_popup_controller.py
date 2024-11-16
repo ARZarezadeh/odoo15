@@ -27,6 +27,8 @@ class ActivityPopupController(http.Controller):
                     'note': activity.note,
                     'create_date': activity.create_date,
                     'id': activity.id,
+                    'res_model_id': activity.res_model_id.model,
+                    'res_id': activity.res_id
                 } for activity in activities]
 
                 return {'show_popup': True, 'activities': activity_data}

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="mail_activity_sell_property" model="mail.activity.type">
+        <field name="name">Sell Property</field>
+        <field name="icon">fa-file-text-o</field>
+        <field name="res_model">estate.property</field>
+        <field name="delay_count">30</field>
+    </record>
+
+    <record id="mail_activity_call_property_person" model="mail.activity.type">
+        <field name="name">Call Property Person</field>
+    </record>
+
+</odoo>

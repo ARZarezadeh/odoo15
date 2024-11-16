@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
     _order = 'id desc'
+    _inherit = ['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -96,12 +97,6 @@ class EstateProperty(models.Model):
                 record.state = record.state if record.state == 'sold' or record.state == 'canceled' else 'offer_received'
                 offers_status = record.offer_ids.mapped('status')
                 if 'accepted' in offers_status:
-                    print("INDEX OF ACCEPTED OFFER: ",
-                          offers_status.index('accepted'), offers_status.count('accepted'))
-                    print("ACCEPTED OFFER PRICE: ",
-                          record.offer_ids[offers_status.index('accepted')].price)
-                # record.selling_price = record.offer_ids[offers_status.index(
-                #     'accepted')].price
                     record.selling_price = record.offer_ids[offers_status.index(
                         'accepted')].price
                     record.state = record.state if record.state == 'sold' or record.state == 'canceled' else 'offer_accepted'
@@ -118,10 +113,6 @@ class EstateProperty(models.Model):
             if record.offer_ids:
                 offers_status = record.offer_ids.mapped('status')
                 if 'accepted' in offers_status:
-                    print("INDEX OF ACCEPTED OFFER: ",
-                          offers_status.index('accepted'), offers_status.count('accepted'))
-                    print("ACCEPTED OFFER PRICE: ",
-                          record.offer_ids[offers_status.index('accepted')].price)
                     record.buyer_id = record.offer_ids[offers_status.index(
                         'accepted')].partner_id
                 else:
@@ -159,6 +150,8 @@ class EstateProperty(models.Model):
         if self.state == 'canceled':
             raise exceptions.UserError('Cancelled Property Can Not Be Sold')
         self.state = 'sold'
+        self.activity_schedule("estate.mail_activity_sell_property", user_id=self.env.user.id,
+                               note=f"Please Sell '{self.name}' property")
 
     def action_cancell_property(self):
         """

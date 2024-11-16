@@ -1,0 +1,31 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<template id="activity_card_template" name="Activity Card Template">
+    <div class="activity-card"
+        t-attf-href="/web#id={{ activity.id
+}}&amp;menu_id=4&amp;action=121&amp;model=mail.activity&amp;view_type=form"
+        target="_blank">
+        <div class="activity-card-content">
+            <div class="activity-type">
+                <t t-esc="activity.activity_type" />
+            </div>
+            <div class="activity-summary">
+                <strong>Summary:</strong>
+                <t t-esc="activity.summary" />
+            </div>
+            <div class="activity-due-date">
+                <strong>Due Date:</strong>
+                <span>
+                    <t t-esc="activity.date_deadline" />
+                </span>
+            </div>
+            <div class="activity-note">
+                <strong>Note:</strong>
+                <t t-esc="activity.note" />
+            </div>
+            <div class="activity-create-date">
+                <strong>Create Date:</strong>
+                <t t-esc="activity.create_date" />
+            </div>
+        </div>
+    </div>
+</template> -->

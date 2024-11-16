@@ -2,11 +2,12 @@
 
 {
     'name': 'Estate',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'category': 'Real Estate/Brokerage',
     'application': 'true',
     'license': 'LGPL-3',
     'data': [
+        'data/mail_activity.xml',
         'security/estate_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
